@@ -13,6 +13,8 @@ import RobotHeads from '../parts/RobotHeads.vue';
 import SidebarStandard from '../sidebars/SidebarStandard.vue';
 import SidebarBuild from '../sidebars/SidebarBuild.vue';
 
+import ShoppingCart from '../cart/ShoppingCart.vue';
+
 Vue.use(Router);
 
 export default new Router({
@@ -64,6 +66,11 @@ export default new Router({
             // if called with true, allows access, if false denies access
             next(isValidId);
         }
+    },
+    {
+        path: '/cart',
+        name: 'ShoppingCart',
+        components: { default: ShoppingCart, sidebar: SidebarStandard }
     }
 ],
 });
