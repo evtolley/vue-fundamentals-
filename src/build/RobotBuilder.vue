@@ -1,5 +1,9 @@
 <template>
   <div class="content">
+    <div v-if="!availableParts">
+      <h1>Loading...</h1>
+    </div>
+    <div v-if="availableParts">
      <div class="preview">
        <CollapsibleSection>
       <div class="preview-content">
@@ -50,18 +54,21 @@
       :parts="availableParts.bases" 
       position="bottom"  
       @partSelected="part => selectedRobot.base=part" />
-
     </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-import availableParts from '../data/parts';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 export default {
     name: 'RobotBuilder',
+    created() {
+      this.$store.dispatch('getParts');
+    },
     beforeRouteLeave(to, from, next) {
       if (this.addedToCart) {
         next(true);
@@ -76,12 +83,13 @@ export default {
       PartSelector,
       CollapsibleSection
     },
-    created() {
-      console.log('created');
+    computed: {
+      availableParts() {
+        return this.$store.state.parts;
+      }
     },
     data() {
         return {
-            availableParts,
             addedToCart: false,
             selectedRobot: {
                 head: {},
